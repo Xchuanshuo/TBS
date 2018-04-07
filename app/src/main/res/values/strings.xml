@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">坦白说揭露者</string>
+    <string name="login_after">登录后才能获取哦</string>
+    <string name="my_tbs">我的坦白说</string>
+</resources>
