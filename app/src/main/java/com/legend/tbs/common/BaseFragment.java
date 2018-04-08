@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 /**
  * @author Legend
@@ -20,7 +22,7 @@ abstract public class BaseFragment extends Fragment {
 
     private View mView;
     private Context mContext;
-    private RecyclerView mRecyclerView;
+    private XRecyclerView mRecyclerView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,11 +38,13 @@ abstract public class BaseFragment extends Fragment {
         return mView;
     }
     private void init() {
+        mRecyclerView.setFootViewText("正在玩命加载中...⌇●﹏●⌇","亲(o~.~o) 我也是有底线的哦");
+        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallClipRotateMultiple);
+        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallClipRotateMultiple);
+        mRecyclerView.getFootView().setMinimumHeight(200);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mView.getContext());
         linearLayoutManager.setOrientation(LinearLayout.VERTICAL);
-
         mRecyclerView.setLayoutManager(linearLayoutManager);
-//        mRecyclerView.setLayoutManager(new GridLayoutManager(mContext,2));
     }
 
     public abstract int setResourceLayoutId();
@@ -63,7 +67,7 @@ abstract public class BaseFragment extends Fragment {
         return mView;
     }
 
-    public RecyclerView getmRecyclerView() {
+    public XRecyclerView getmRecyclerView() {
         return mRecyclerView;
     }
     public Context getmContext() {

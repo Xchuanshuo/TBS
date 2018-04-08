@@ -56,6 +56,7 @@ public class FriendTbsPresenter implements BaseContract.Presenter {
             @Override
             public void onFinished() {
                 mFriendAdapter.notifyDataSetChanged();
+                view.hideLoading();
             }
         });
     }

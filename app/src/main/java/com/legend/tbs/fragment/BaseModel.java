@@ -17,13 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static com.legend.tbs.common.adapter.TbsAdapter.GET_NICK;
 
 /**
  * @author Legend
@@ -35,9 +30,7 @@ public class BaseModel implements BaseContract.Model {
 
     public static final int RESULT_OK = 200;
     private BaseContract.Callback<TbsBean> callback;
-    private BaseContract.Callback<String> stringCallback;
     private int type;
-    private final String regex = "\"(.*?)\"";
     private List<String> list = new ArrayList<>();
     private static String cookie="";
     public static int finished = 0;
@@ -48,8 +41,6 @@ public class BaseModel implements BaseContract.Model {
         this.type = type;
         new TbsAsyncTask().execute(url,token,cookie);
     }
-
-
 
     class TbsAsyncTask extends AsyncTask<String,Void,IResponse> {
 

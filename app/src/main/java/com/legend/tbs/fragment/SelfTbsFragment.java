@@ -2,8 +2,8 @@ package com.legend.tbs.fragment;
 
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.legend.tbs.R;
 import com.legend.tbs.common.BaseFragment;
 import com.legend.tbs.contract.BaseContract;
@@ -11,6 +11,7 @@ import com.legend.tbs.contract.BaseContract;
 import java.lang.ref.WeakReference;
 
 import static com.legend.tbs.TbsActivity.cookie;
+import static com.legend.tbs.TbsActivity.dialog;
 import static com.legend.tbs.TbsActivity.token;
 import static com.legend.tbs.fragment.SelfTbsPresenter.mSelfAdapter;
 
@@ -24,7 +25,7 @@ public class SelfTbsFragment extends BaseFragment implements BaseContract.View {
 
     private BaseContract.Model model;
     private BaseContract.Presenter presenter;
-    private RecyclerView mRecyclerView;
+    private XRecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefresh;
 
     public static final String SELF_URL = "https://ti.qq.com/cgi-node/honest-say/receive/mine?/cgi-node/honest-say/activity/choose?_client_version=0.0.7&_t=1522927164526&token=";
@@ -45,19 +46,22 @@ public class SelfTbsFragment extends BaseFragment implements BaseContract.View {
         model = new BaseModel();
         WeakReference<SelfTbsFragment> reference = new WeakReference<>(this);
         presenter = new SelfTbsPresenter(reference.get(),model);
-        mSwipeRefresh = $(R.id.mSwipeRefresh);
-        mSwipeRefresh.setColorSchemeResources(R.color.colorPrimary);
     }
 
     @Override
     public void initListener() {
         mRecyclerView = getmRecyclerView();
         mRecyclerView.setAdapter(mSelfAdapter);
-        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mRecyclerView.setLoadingMoreEnabled(false);
+        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                mSwipeRefresh.setRefreshing(true);
                 refreshData();
+            }
+
+            @Override
+            public void onLoadMore() {
+
             }
         });
     }
@@ -68,7 +72,6 @@ public class SelfTbsFragment extends BaseFragment implements BaseContract.View {
             @Override
             public void run() {
                 presenter.sendRequest(SELF_URL,token,cookie);
-                mSwipeRefresh.setRefreshing(false);
             }
         },800);
 
@@ -77,11 +80,12 @@ public class SelfTbsFragment extends BaseFragment implements BaseContract.View {
 
     @Override
     public void showLoading() {
-        mSwipeRefresh.setRefreshing(true);
+        dialog.show();
     }
 
     @Override
     public void hideLoading() {
-        mSwipeRefresh.setRefreshing(false);
+        mRecyclerView.refreshComplete();
+        dialog.dismiss();
     }
 }

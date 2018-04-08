@@ -32,7 +32,6 @@ public class SelfTbsPresenter implements BaseContract.Presenter {
     @Override
     public void sendRequest(String url, String token, String cookie) {
 
-
         model.Request(url, token, cookie, 0,new BaseContract.Callback<TbsBean>() {
             @Override
             public void onStart() {

@@ -1,12 +1,9 @@
 package com.legend.tbs.common;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.CookieManager;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -43,22 +40,11 @@ public class MyWebViewClient extends WebViewClient {
         super.onPageFinished(view, url);
     }
 
-    @Override
-    public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        if (url.startsWith("http") || url.startsWith("https")) { //http和https协议开头的执行正常的流程
-            return super.shouldInterceptRequest(view, url);
-        } else { //其他的URL则会开启一个Acitity然后去调用原生APP
-            Intent in = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            context = view.getContext();
-            context.startActivity(in);
-            return null;
-        }
-    }
-
     public static String getCookie() {
         return cookie;
     }
 
+    // 从返回的cookie中正则提取skey
     public static String getSkey() {
 
         String regex = "skey=(.*?);";

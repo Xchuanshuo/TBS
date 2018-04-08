@@ -41,6 +41,9 @@ public class Calculate {
                     "7i", "S", "l",
                     "Ne", "c", "F",
                     "NK", "E", "q"};
+    private static final String[] endStr = {"on","ov","oc","oz",
+                                            "7n","7v","7c","7z",
+                                            "Nn","Nv"};
 
     private static HashMap<String, Integer>[] maps = new HashMap[3];
 
@@ -51,19 +54,17 @@ public class Calculate {
                 maps[Dici].put(words[Dici + 3 * Wordi], Wordi);
             }
         }
-        maps[0].put("on",0);
-        maps[0].put("ov",1);
-        maps[0].put("oc",2);
-        maps[0].put("oz",3);
-        maps[0].put("7n",4);
-        maps[0].put("7v",5);
-        maps[0].put("7c",6);
-        maps[0].put("7z",7);
-        maps[0].put("Nn",8);
-        maps[0].put("Nv",9);
+        // 尾数加密的规则
+        for (int i=0;i < 10;i++) {
+            maps[0].put(endStr[i],i);
+        }
     }
 
-    // 解密
+    /**
+     *  解密方法
+     * @param str 传入skey
+     * @return
+     */
     public static String decode(String str) {
         StringBuilder sb = new StringBuilder();
         char[] chars = str.substring(4, str.length()).toCharArray();
@@ -90,24 +91,24 @@ public class Calculate {
     public static Dialog createLoadingDialog(Context context, String msg) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.loading_dialog, null);// 得到加载view
-        LinearLayout layout = v.findViewById(R.id.dialog_view);// 加载布局
+        View v = inflater.inflate(R.layout.loading_dialog, null);
+        LinearLayout layout = v.findViewById(R.id.dialog_view);
         // main.xml中的ImageView
         ImageView spaceshipImage = v.findViewById(R.id.img);
-        TextView tipTextView = v.findViewById(R.id.tipTextView);// 提示文字
+        TextView tipTextView = v.findViewById(R.id.tipTextView);
         // 加载动画
         Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(
                 context, R.anim.loading_animation);
         // 使用ImageView显示动画
         spaceshipImage.startAnimation(hyperspaceJumpAnimation);
-        tipTextView.setText(msg);// 设置加载信息
+        tipTextView.setText(msg);
+        // 创建自定义样式dialog
+        Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);
 
-        Dialog loadingDialog = new Dialog(context, R.style.loading_dialog);// 创建自定义样式dialog
-
-        loadingDialog.setCancelable(false);// 不可以用“返回键”取消
+        loadingDialog.setCancelable(false);
         loadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));// 设置布局
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         return loadingDialog;
     }
 

@@ -24,7 +24,9 @@ import android.util.AttributeSet;
 import com.legend.tbs.R;
 
 /**
- * Created by wxy on 16/6/27.
+ *
+ * @author wxy
+ * @date 16/6/27
  */
 public class CircleImageView extends AppCompatImageView {
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
